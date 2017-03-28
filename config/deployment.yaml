@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{name}}
+spec:
+  replicas: {{replicas|default(2)}}
+  template:
+    metadata:
+      labels:
+        app: {{name}}
+    spec:
+      containers:
+      - name: {{name}}
+        image: {{image}}
+        ports:
+        - containerPort: {{port|default(80)}}
