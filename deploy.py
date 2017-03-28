@@ -56,10 +56,6 @@ def render(tpl_path, context):
         loader=jinja2.FileSystemLoader(path or './config/')
     ).get_template(filename).render(context)
 
-def update_k8s_from_file(yaml_file):
-    with open(yaml_file) as config_file:
-        update_k8s(yaml.load(config_file))
-
 def update_k8s(context):
     print(context)
 
@@ -72,9 +68,9 @@ def update_k8s(context):
     create_or_update(k8s_beta, "ingress", context)
     create_or_update(k8s_beta, "deployment", context)
 
-
 def main():
-    update_k8s_from_file(".kdeploy.yml")
+    with open(".kdeploy.yml") as config:
+        update_k8s(yaml.load(config))
 
 if __name__ == '__main__':
     main()

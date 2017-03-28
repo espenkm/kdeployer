@@ -1,4 +1,7 @@
 #!/usr/bin/env bash 
 
-docker build -t espenkm/kdeployer:${TRAVIS_COMMIT:-latest} .
-docker push espenkm/kdeployer:${TRAVIS_COMMIT:-latest}
+COMMIT=${TRAVIS_COMMIT:-latest}
+docker build -t espenkm/kdeployer:${COMMIT} .
+
+docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+docker push espenkm/kdeployer:${COMMIT}
