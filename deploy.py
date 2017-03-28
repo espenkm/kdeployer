@@ -4,7 +4,6 @@ import jinja2
 
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
-from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
 pretty ='pretty_example'
 conflict = 409
