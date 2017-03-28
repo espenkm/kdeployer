@@ -1,0 +1,2 @@
+name: "kdeployer"
+image: "espenkm/kdeployer:latest"
