@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{name}}
 spec:
-  replicas: {{replicas|default(2)}}
+  replicas: {{replicas|default(1)}}
   template:
     metadata:
       labels:

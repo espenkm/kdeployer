@@ -1,2 +1,8 @@
 name: "kdeployer"
+domain: ""
 image: "espenkm/kdeployer:latest"
+ports:
+  - target_port: 8080
+healthcheck:
+  liveness:
+    http:

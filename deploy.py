@@ -58,7 +58,7 @@ def render(tpl_path, context):
 def update_k8s(context):
     print(context)
 
-    config.load_kube_config()
+    load_config()
 
     k8s = client.CoreV1Api()
     k8s_beta = client.ExtensionsV1beta1Api()
@@ -67,9 +67,16 @@ def update_k8s(context):
     create_or_update(k8s_beta, "ingress", context)
     create_or_update(k8s_beta, "deployment", context)
 
+def load_config():
+    if ("KUBERNETES_SERVICE_HOST" in os.environ):
+        config.load_incluster_config()
+    else:
+        config.load_kube_config()
+
+
 def main():
-    with open(".kdeploy.yml") as config:
-        update_k8s(yaml.load(config))
+    with open(".kdeploy.yml") as context:
+        update_k8s(yaml.load(context))
 
 if __name__ == '__main__':
     main()
