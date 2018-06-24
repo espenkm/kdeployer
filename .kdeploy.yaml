@@ -1,6 +1,6 @@
 name: "kdeployer"
-domain: ""
-image: "espenkm/kdeployer:latest"
+domain: "dev.utviklr.no"
+image: espenkm/kdeployer:997
 ports:
   - target_port: 8080
 healthcheck:

@@ -64,18 +64,20 @@ def update_k8s(context):
     k8s_beta = client.ExtensionsV1beta1Api()
 
     create_or_recreate(k8s, "service", context)
-    create_or_update(k8s_beta, "ingress", context)
+    create_or_update(k8s_beta, "custom_resource_definition	", context)
     create_or_update(k8s_beta, "deployment", context)
 
 def load_config():
     if ("KUBERNETES_SERVICE_HOST" in os.environ):
         config.load_incluster_config()
+    elif ("KUBECONFIG" in os.environ):
+        config.load_kube_config(os.environ.get("KUBECONFIG"))
     else:
         config.load_kube_config()
 
 
 def main():
-    with open(".kdeploy.yml") as context:
+    with open(".kdeploy.yaml") as context:
         update_k8s(yaml.load(context))
 
 if __name__ == '__main__':

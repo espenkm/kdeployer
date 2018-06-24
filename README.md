@@ -20,7 +20,7 @@ minikube addons enable ingress
 
 Add the dns entry to hosts
 ```bash
-echo "$(minikube ip) kdeployer.minikube.local" | sudo tee -a /etc/hosts
+echo "$(minikube ip) kdeployer.local" | sudo tee -a /etc/hosts
 ```
 
 Bootstrap the minikube cluster with the help of docker
@@ -46,3 +46,12 @@ curl -i -H "Content-Type: application/json" -X POST -d '{"name":"foo", "image": 
 ```bash
 kubectl delete deployment,ingress,service kdeployer
 ``
+
+
+Create cluster
+
+gcloud container --project "nifty-yeti-164407" clusters create "dev-cluster-1" --zone "europe-west1-b" --machine-type "n1-standard-1" --image-type "COS" --disk-size "100" --scopes "https://www.googleapis.com/auth/compute","https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --num-nodes "1" --network "default" --no-enable-cloud-logging --no-enable-cloud-monitoring --preemptible --disable-addons HttpLoadBalancing 
+
+and ip
+
+gcloud compute addresses create kubernetes-ingress --global  --project nifty-yeti-164407

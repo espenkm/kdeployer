@@ -11,7 +11,7 @@ def index():
 def deploy():
     if not request.json:
         abort(400)
-    update_k8s(request.json)
+    update_k8s(request.get_json())
     return 'Deployed OK'
 
 if __name__ == "__main__":
