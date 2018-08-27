@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: {{name}}
-        image: {{image}}:{{tag|default(latest)}}
+        image: "{{image}}:{{tag|default(latest)}}"
         ports:
         - containerPort: {{port|default(80)}}

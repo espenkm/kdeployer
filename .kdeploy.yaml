@@ -1,8 +1,5 @@
 name: "kdeployer"
-domain: "dev.utviklr.no"
+domain: "utviklr.no"
+env: "staging"
 image: espenkm/kdeployer
-ports:
-  - target_port: 8080
-healthcheck:
-  liveness:
-    http:
+target_port: 8080

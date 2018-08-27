@@ -9,7 +9,7 @@ spec:
   type: NodePort
   ports:
   - port: {{port|default(80)}}
-    targetPort: {{port|default(80)}}
+    targetPort: {{target_port|default(80)}}
     protocol: TCP
     name: http
   selector:
