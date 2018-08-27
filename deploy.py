@@ -64,7 +64,7 @@ def update_k8s(context):
     k8s_beta = client.ExtensionsV1beta1Api()
 
     create_or_recreate(k8s, "service", context)
-    create_or_update(k8s_beta, "custom_resource_definition	", context)
+    create_or_update(k8s_beta, "ingress", context)
     create_or_update(k8s_beta, "deployment", context)
 
 def load_config():

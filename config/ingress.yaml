@@ -1,7 +1,11 @@
-apiVersion: voyager.appscode.com/v1beta1
+apiVersion: extesions/v1beta1
 kind: Ingress
 metadata:
-  name: "{{name}}"
+  name: {{name}}
+  namespace: {{namespace|default(default)}}
+  annotations:
+      kubernetes.io/ingress.global-static-ip-name: {{name}}-ingress
+      certmanager.k8s.io/cluster-issuer: letsencrypt-{{env}}
 spec:
   rules:
   - http:
@@ -10,3 +14,7 @@ spec:
         backend:
           serviceName: {{name}}
           servicePort: {{port|default(80)}}
+    tls:
+    - secretName: {{name}}-tls
+      hosts:
+      - {{domain}}
