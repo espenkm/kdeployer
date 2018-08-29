@@ -1,3 +1,4 @@
 Jinja2
 kubernetes
 flask
+prometheus-flask-exporter
