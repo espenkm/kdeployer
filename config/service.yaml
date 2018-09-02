@@ -2,15 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{name}}
-  namespace: {{namespace|default(default)}}
   labels:
     app: {{name}}
 spec:
   type: NodePort
-  ports:
-  - port: {{port|default(80)}}
-    targetPort: {{target_port|default(80)}}
-    protocol: TCP
-    name: http
   selector:
     app: {{name}}
+  ports:
+  - port: {{port|default(8080)}}
+    targetPort: {{target_port|default(8080)}}
+    protocol: TCP
+    name: {{name}}-port

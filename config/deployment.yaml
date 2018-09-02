@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{name}}
   namespace: {{namespace|default(default)}}
+  label:
+    app: {{name}}
 spec:
   replicas: {{replicas|default(1)}}
   strategy:
@@ -15,6 +17,6 @@ spec:
     spec:
       containers:
       - name: {{name}}
-        image: "{{image}}:{{tag|default(latest)}}"
+        image: "{{image}}:latest"
         ports:
-        - containerPort: {{port|default(80)}}
+        - containerPort: {{port|default(8080)}}

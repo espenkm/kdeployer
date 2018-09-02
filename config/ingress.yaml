@@ -2,19 +2,16 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{name}}
-  namespace: {{namespace|default(default)}}
   annotations:
       kubernetes.io/ingress.global-static-ip-name: {{name}}-ingress
       certmanager.k8s.io/cluster-issuer: letsencrypt-{{env|default(staging)}}
+  labels:
+    app: {{name}}
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: {{name}}
-          servicePort: {{port|default(80)}}
-    tls:
-    - secretName: {{name}}-tls
-      hosts:
-      - {{domain}}
+  tls:
+  - secretName: {{env|default(staging)}}-tls
+    hosts:
+    - {{name}}.{{domain}}
+  backend:
+      serviceName: {{name}}
+      servicePort: {{name}}-port

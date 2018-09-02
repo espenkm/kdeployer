@@ -1,5 +1,5 @@
-name: "kdeployer"
-domain: "utviklr.no"
-env: "staging"
+name: kdeployer
+domain: utviklr.no
+env: staging
 image: espenkm/kdeployer
 target_port: 8080
