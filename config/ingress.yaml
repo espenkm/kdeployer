@@ -9,9 +9,9 @@ metadata:
     app: {{name}}
 spec:
   tls:
-  - secretName: {{host}}-tls
+  - secretName: {{name}}
     hosts:
     - {{host}}
   backend:
       serviceName: {{name}}
-      servicePort: {{name}}--port
+      servicePort: 8080

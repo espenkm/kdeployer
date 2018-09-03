@@ -82,7 +82,7 @@ def update_k8s(context):
     k8s = client.CoreV1Api()
     k8s_beta = client.ExtensionsV1beta1Api()
 
-    create_or_update_certificate(namespace, context)
+    create_or_update_certificate(context)
     create_or_update(k8s, "service", namespace, context)
     create_or_update(k8s_beta, "ingress", namespace, context)
     create_or_update(k8s_beta, "deployment", namespace, context)

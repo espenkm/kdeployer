@@ -1,4 +1,5 @@
 Jinja2
 kubernetes
 flask
+flask_basicauth
 prometheus-flask-exporter

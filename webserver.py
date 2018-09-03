@@ -1,18 +1,16 @@
 from flask import Flask, request
 from prometheus_flask_exporter import PrometheusMetrics
 from deploy import update_k8s, get_or_create_secret
-from flask_basicauth import BasicAuth
 
 app = Flask(__name__)
 app.config['BASIC_AUTH_USERNAME'] = 'admin'
-app.config['BASIC_AUTH_PASSWORD'] = get_or_create_secret("kdeployer-password");
+#app.config['BASIC_AUTH_PASSWORD'] = get_or_create_secret("kdeployer-password");
 
 @app.route('/')
 def index():
     return 'Up and running '
 
 @app.route('/deploy', methods=['GET', 'POST'])
-@basic_auth.required
 def deploy():
     if not request.json:
         abort(400)

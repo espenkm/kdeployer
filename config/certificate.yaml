@@ -1,9 +1,9 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: {{env}}-{{domain}}-{{name}}-tls
+  name: {{name}}
 spec:
-  secretName: {{host}}-tls
+  secretName: {{name}}
   issuerRef:
     name: letsencrypt-{{env}}
     kind: ClusterIssuer
