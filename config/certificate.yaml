@@ -1,19 +1,18 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: kdeployer-tls
-  namespace: default
+  name: {{env}}-{{domain}}-{{name}}-tls
 spec:
-  secretName: letsencrypt-staging
+  secretName: {{host}}-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-{{env}}
     kind: ClusterIssuer
-  commonName: kdeployer.utviklr.no
+  commonName: {{host}}
   dnsNames:
-  - kdeployer.utviklr.no
+  - {{host}}
   acme:
     config:
     - http01:
-        ingress: kdeployer
+        ingress: {{name}}
       domains:
-      - kdeployer.utviklr.no
+      - {{host}}

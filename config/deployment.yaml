@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{name}}
-  namespace: {{namespace|default(default)}}
   label:
     app: {{name}}
 spec:
@@ -17,6 +16,7 @@ spec:
     spec:
       containers:
       - name: {{name}}
-        image: "{{image}}:latest"
+        imagePullPolicy: Always
+        image: "{{image}}:{{tag}}"
         ports:
         - containerPort: {{port|default(8080)}}

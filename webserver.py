@@ -3,13 +3,8 @@ from prometheus_flask_exporter import PrometheusMetrics
 from deploy import update_k8s
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app)
 
 @app.route('/')
-def index():
-    return 'Up and running '
-
-@app.route('/healtz')
 def index():
     return 'Up and running '
 

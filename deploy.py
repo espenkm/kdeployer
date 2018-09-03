@@ -7,33 +7,28 @@ from kubernetes.client.rest import ApiException
 
 pretty ='pretty_example'
 conflict = 409
-namespace = "default"
-
-def delete_function(api, type):
-    return getattr(api, "delete_namespaced_" + type)
 
 def replace_function(api, type):
-    return getattr(api, "replace_namespaced_" + type)
+    return getattr(api, "patch_namespaced_" + type)
 
 def create_function(api, type):
     return getattr(api, "create_namespaced_" + type)
 
-def create_or_recreate(api, type_name, context):
-    dep = load_file(type_name, context)
+def create_or_update_certificate(namespace, context):
+    k8s_custom = client.CustomObjectsApi()
+    dep = load_file("certificate", context)
+
     try:
-        resp = create_function(api, type_name)(body=dep, namespace=namespace)
-        print("%s created. status='%s'", type_name, str(resp.status))
+        api_response = k8s_custom.create_cluster_custom_object("certmanager.k8s.io", "v1alpha1", "", dep, pretty=pretty)
+        print(api_response)
     except ApiException as e:
         if e.status == conflict:
-            resp = delete_function(api, type_name)(name=context["name"],namespace=namespace, pretty=pretty)
-            print("%s deleted. status='%s'", type_name, str(resp.status))
-
-            resp = create_function(api, type_name)(body=dep, namespace=namespace, pretty=pretty)
+            resp = k8s_custom.patch_cluster_custom_object("certmanager.k8s.io", "v1alpha1",  "", dep, pretty=pretty)
             print("%s updated. status='%s'", type_name, str(resp.status))
         else:
             raise e
 
-def create_or_update(api, type_name,  context):
+def create_or_update(api, type_name,  namespace, context):
     dep = load_file(type_name, context)
     try:
         resp = create_function(api, type_name)(body=dep, namespace=namespace)
@@ -56,6 +51,13 @@ def render(tpl_path, context):
     ).get_template(filename).render(context)
 
 def update_k8s(context):
+    host = context["name"]
+    if context["env"] != "prod":
+        host += "." + context["env"]
+    host += "." + context["domain"]
+
+    namespace=context["env"]
+    context["host"] = host
     print(context)
 
     load_config()
@@ -63,9 +65,10 @@ def update_k8s(context):
     k8s = client.CoreV1Api()
     k8s_beta = client.ExtensionsV1beta1Api()
 
-    create_or_recreate(k8s, "service", context)
-    create_or_update(k8s_beta, "ingress", context)
-    create_or_update(k8s_beta, "deployment", context)
+    create_or_update_certificate(namespace, context)
+    create_or_update(k8s, "service", namespace, context)
+    create_or_update(k8s_beta, "ingress", namespace, context)
+    create_or_update(k8s_beta, "deployment", namespace, context)
 
 def load_config():
     if ("KUBERNETES_SERVICE_HOST" in os.environ):
