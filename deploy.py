@@ -1,12 +1,15 @@
 import os
 import yaml
 import jinja2
+import uuid
+import base64
 
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
 pretty ='pretty_example'
 conflict = 409
+namespace = "default"
 
 def replace_function(api, type):
     return getattr(api, "patch_namespaced_" + type)
@@ -14,7 +17,22 @@ def replace_function(api, type):
 def create_function(api, type):
     return getattr(api, "create_namespaced_" + type)
 
-def create_or_update_certificate(namespace, context):
+def get_or_create_secret(name):
+    k8s = client.CoreV1Api()
+
+    try:
+        k8s_secret = k8s.read_namespaced_secret(name, namespace)
+        secret = base64.b64decode(k8s_secret.data['password'])
+    except ApiException as e:
+        secret = uuid.uuid4()
+
+        data = []
+        data["password"] = base64.b64encode(secret)
+        k8s.create_namespaced_secret(namespace, client.V1Secret(name=name, namespace=namespace, data=data))
+
+    return secret
+
+def create_or_update_certificate(context):
     k8s_custom = client.CustomObjectsApi()
     dep = load_file("certificate", context)
 
@@ -56,7 +74,6 @@ def update_k8s(context):
         host += "." + context["env"]
     host += "." + context["domain"]
 
-    namespace=context["env"]
     context["host"] = host
     print(context)
 
